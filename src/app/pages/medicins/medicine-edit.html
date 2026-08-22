@@ -1,0 +1,70 @@
+<section class="edit-page" aria-labelledby="edit-medicine-title">
+  <div class="page-heading">
+    <p class="eyebrow">Inventory</p>
+    <h1 id="edit-medicine-title">Edit Medicine</h1>
+    <p class="page-description">Review and update the medicine details.</p>
+  </div>
+
+  @if (isLoading()) {
+    <p class="status-message">Loading medicine details...</p>
+  } @else if (loadError()) {
+    <p class="status-message error-message">Unable to load this medicine.</p>
+  } @else {
+    <form class="medicine-form" [formGroup]="medicineForm" (ngSubmit)="saveMedicine()">
+      <div class="form-header">
+        <h2>Medicine Details</h2>
+      </div>
+
+      <div class="form-fields">
+        <div class="field-group">
+          <label for="medicine-name">Name <span aria-hidden="true">*</span></label>
+          <input id="medicine-name" type="text" formControlName="name" />
+        </div>
+
+        <div class="field-group">
+          <label for="medicine-strength">Strength <span aria-hidden="true">*</span></label>
+          <input id="medicine-strength" type="text" formControlName="strength" />
+        </div>
+
+        <div class="field-group">
+          <label for="medicine-form">Form <span aria-hidden="true">*</span></label>
+          <select id="medicine-form" formControlName="form">
+            <option value="">Select form</option>
+            <option value="Tablet">Tablet</option>
+            <option value="Capsule">Capsule</option>
+            <option value="Syrup">Syrup</option>
+            <option value="Injection">Injection</option>
+            <option value="Drops">Drops</option>
+          </select>
+        </div>
+
+        <label class="active-toggle">
+          <input type="checkbox" formControlName="isActive" />
+          <span>Active Medicine</span>
+        </label>
+      </div>
+
+      <div class="form-actions">
+        <a class="btn btn-secondary" routerLink="/admin/Medincines">Cancel</a>
+        <button class="btn btn-primary" type="submit" [disabled]="isSaving()">
+          {{ isSaving() ? 'Saving...' : 'Save Medicine' }}
+        </button>
+      </div>
+
+      @if (saveError()) {
+        <p class="status-message error-message" role="alert">Unable to save this medicine.</p>
+      }
+    </form>
+  }
+</section>
+
+@if (showSuccessPopup()) {
+  <div class="popup-backdrop" role="presentation">
+    <section class="success-popup" role="alertdialog" aria-modal="true" aria-labelledby="update-success-title">
+      <div class="success-icon" aria-hidden="true">&#10003;</div>
+      <h2 id="update-success-title">Medicine Updated</h2>
+      <p>The medicine record was updated successfully.</p>
+      <button class="btn btn-primary" type="button" (click)="closeSuccessPopup()">OK</button>
+    </section>
+  </div>
+}

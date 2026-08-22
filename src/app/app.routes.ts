@@ -4,6 +4,8 @@ import { Login } from './pages/login/login';
 import { Dashboard } from './pages/dashboard/dashboard';
 import { Patients } from './pages/patients/patients';
 import { Visits } from './pages/visits/visits';
+import { Medicins } from './pages/medicins/medicins';
+import { MedicineEdit } from './pages/medicins/medicine-edit';
 
 export const routes: Routes = [
     {
@@ -35,6 +37,14 @@ export const routes: Routes = [
             {
                 path:'visits',
                 component: Visits
+            },
+             {
+                path:'Medincines',
+                component: Medicins
+            },
+            {
+                path:'medicines/edit/:id',
+                component: MedicineEdit
             },
         ]
 

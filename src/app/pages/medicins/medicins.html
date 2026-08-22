@@ -1,0 +1,67 @@
+<section class="page-heading">
+	<div>
+		<p class="eyebrow">Inventory</p>
+		<h1>Medicine Management</h1>
+		<p class="page-description">Create and manage medicine details for the hospital inventory.</p>
+	</div>
+</section>
+
+<section class="table-panel" aria-labelledby="medicine-list-title">
+	<div class="table-panel-header">
+		<h2 id="medicine-list-title">Medicine List</h2>
+		<button class="btn btn-primary" type="button">+ Add Medicine</button>
+	</div>
+
+	<div class="table-scroll">
+		<table>
+			<thead>
+				<tr>
+					<th scope="col">Sl No</th>
+					<th scope="col">Name</th>
+					<th scope="col">Strength</th>
+					<th scope="col">Form</th>
+					<th scope="col">Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				@for (medicine of medicineList(); track medicine.medicineId; let index = $index) {
+					<tr>
+						<td>{{ index + 1 }}</td>
+						<td>{{ medicine.name }}</td>
+						<td>{{ medicine.strength }}</td>
+						<td>{{ medicine.form }}</td>
+						<td class="table-actions">
+							<a class="btn btn-edit" [routerLink]="['/admin/medicines/edit', medicine.medicineId]">Edit</a>
+							<button class="btn btn-delete" type="button" (click)="confirmDelete(medicine.medicineId, medicine.name)">Delete</button>
+						</td>
+					</tr>
+				} @empty {
+					<tr>
+						<td class="empty-state" colspan="5">No medicines found.</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+</section>
+
+@if (showDeletePopup()) {
+	<div class="popup-backdrop" role="presentation">
+		<section class="delete-popup" role="alertdialog" aria-modal="true" aria-labelledby="delete-medicine-title">
+			<div class="delete-icon" aria-hidden="true">!</div>
+			<h2 id="delete-medicine-title">Delete Medicine?</h2>
+			<p>Are you sure you want to delete <strong>{{ selectedMedicineName }}</strong>?</p>
+
+			@if (deleteError()) {
+				<p class="delete-error" role="alert">Unable to delete this medicine.</p>
+			}
+
+			<div class="popup-actions">
+				<button class="btn btn-secondary" type="button" (click)="cancelDelete()" [disabled]="isDeleting()">Cancel</button>
+				<button class="btn btn-delete" type="button" (click)="deleteSelectedMedicine()" [disabled]="isDeleting()">
+					{{ isDeleting() ? 'Deleting...' : 'OK' }}
+				</button>
+			</div>
+		</section>
+	</div>
+}

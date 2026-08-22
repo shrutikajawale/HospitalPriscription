@@ -1,0 +1,58 @@
+<div class="app-shell">
+	<aside class="app-sidebar" aria-label="Main navigation">
+		<a class="app-brand" routerLink="/admin/dashboard" aria-label="Neo Care dashboard">
+			<span class="brand-mark">H+</span>
+			<span class="brand-name">Neo Care</span>
+		</a>
+
+		<nav class="sidebar-nav">
+			<p class="nav-label">Overview</p>
+			<a class="nav-link" routerLink="/admin/dashboard" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }">
+				<span class="nav-icon" aria-hidden="true">&#9632;</span>
+				<span>Dashboard</span>
+			</a>
+
+			<p class="nav-label">Management</p>
+			<a class="nav-link" routerLink="/admin/patients" routerLinkActive="is-active">
+				<span class="nav-icon" aria-hidden="true">&#9823;</span>
+				<span>Patients</span>
+			</a>
+			<a class="nav-link" routerLink="/admin/visits" routerLinkActive="is-active">
+				<span class="nav-icon" aria-hidden="true">&#9744;</span>
+				<span>Visits</span>
+			</a>
+
+			<p class="nav-label">Assets</p>
+			<span class="nav-link nav-link-muted">
+				<span class="nav-icon" aria-hidden="true">&#9670;</span>
+				<span>Medicines</span>
+				<span class="coming-soon">Soon</span>
+			</span>
+
+			<p class="nav-label">Clinical</p>
+			<span class="nav-link nav-link-muted">
+				<span class="nav-icon" aria-hidden="true">&#43;</span>
+				<span>Prescriptions</span>
+				<span class="coming-soon">Soon</span>
+			</span>
+		</nav>
+
+		<div class="sidebar-footer">
+			<div class="care-status"><span class="status-dot"></span> System operational</div>
+			<button class="logout-button" type="button" routerLink="/login">Sign out</button>
+		</div>
+	</aside>
+
+	<main class="app-main">
+		<header class="app-topbar">
+			<div class="breadcrumb"><span class="breadcrumb-mark">+</span><span>Hospital operations</span></div>
+			<div class="topbar-actions">
+				<span class="topbar-date">19 Aug 2026</span>
+				<span class="user-avatar" aria-label="Current user">DA</span>
+			</div>
+		</header>
+		<section class="page-content">
+			<router-outlet></router-outlet>
+		</section>
+	</main>
+</div>

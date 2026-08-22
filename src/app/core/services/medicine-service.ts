@@ -21,6 +21,10 @@ export class MedicineService {
         return this.http.get(environment.API_URL + "medicines/" + id)
     }
 
+    createMedicine(medicine: unknown) {
+        return this.http.post(environment.API_URL + "medicines", medicine)
+    }
+
     updateMedicine(id: number, medicine: unknown) {
         return this.http.put(environment.API_URL + "medicines/" + id, medicine)
     }
@@ -33,7 +37,4 @@ export class MedicineService {
         return this.http.get(environment.API_URL + GlobalConstant.API_METHODS.MEDICINE_SEARCH + text)
     }
 
-    createMedicine() {
-        
-    }
 }

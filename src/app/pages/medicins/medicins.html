@@ -6,10 +6,12 @@
 	</div>
 </section>
 
-<section class="table-panel" aria-labelledby="medicine-list-title">
+
+<div class="medicine-workspace" [class.form-open]="showAddForm()">
+<section class="table-panel" aria-labelledby="medicine-list-title" [class.table-panel-with-form]="showAddForm()">
 	<div class="table-panel-header">
 		<h2 id="medicine-list-title">Medicine List</h2>
-		<button class="btn btn-primary" type="button">+ Add Medicine</button>
+		<button class="btn btn-primary" type="button" (click)="openAddForm()">+ Add Medicine</button>
 	</div>
 
 	<div class="table-scroll">
@@ -44,6 +46,67 @@
 		</table>
 	</div>
 </section>
+
+@if (showAddForm()) {
+	<section class="add-medicine-panel" aria-labelledby="add-medicine-title">
+		<div class="add-panel-header">
+			<h2 id="add-medicine-title">Add Medicine</h2>
+			<button class="close-button" type="button" aria-label="Close add medicine form" (click)="closeAddForm()">&#10005;</button>
+		</div>
+
+		<form class="add-medicine-form" [formGroup]="medicineForm" (ngSubmit)="addMedicine()">
+			<div class="field-group">
+				<label for="add-medicine-name">Name <span aria-hidden="true">*</span></label>
+				<input id="add-medicine-name" type="text" formControlName="name" placeholder="Enter medicine name" />
+			</div>
+
+			<div class="field-group">
+				<label for="add-medicine-strength">Strength <span aria-hidden="true">*</span></label>
+				<input id="add-medicine-strength" type="text" formControlName="strength" placeholder="Enter strength" />
+			</div>
+
+			<div class="field-group">
+				<label for="add-medicine-form">Form <span aria-hidden="true">*</span></label>
+				<select id="add-medicine-form" formControlName="form">
+					<option value="">Select form</option>
+					<option value="Tablet">Tablet</option>
+					<option value="Capsule">Capsule</option>
+					<option value="Syrup">Syrup</option>
+					<option value="Injection">Injection</option>
+					<option value="Drops">Drops</option>
+				</select>
+			</div>
+
+			<label class="active-toggle">
+				<input type="checkbox" formControlName="isActive" />
+				<span>Active Medicine</span>
+			</label>
+
+			@if (addError()) {
+				<p class="add-error" role="alert">Unable to add this medicine.</p>
+			}
+
+			<div class="add-panel-actions">
+				<button class="btn btn-secondary" type="button" (click)="closeAddForm()" [disabled]="isAdding()">Cancel</button>
+				<button class="btn btn-primary" type="submit" [disabled]="isAdding()">
+					{{ isAdding() ? 'Saving...' : 'Save Medicine' }}
+				</button>
+			</div>
+		</form>
+	</section>
+}
+</div>
+
+@if (showAddSuccess()) {
+	<div class="popup-backdrop" role="presentation">
+		<section class="success-popup" role="alertdialog" aria-modal="true" aria-labelledby="add-success-title">
+			<div class="success-icon" aria-hidden="true">&#10003;</div>
+			<h2 id="add-success-title">Medicine Added</h2>
+			<p>The medicine record was added successfully.</p>
+			<button class="btn btn-primary" type="button" (click)="closeAddSuccess()">OK</button>
+		</section>
+	</div>
+}
 
 @if (showDeletePopup()) {
 	<div class="popup-backdrop" role="presentation">

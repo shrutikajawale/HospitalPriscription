@@ -44,6 +44,35 @@
 	vertical-align: middle;
 }
 
+.loading-state,
+.empty-state {
+	padding: 2rem 1rem;
+	color: var(--ink-soft);
+	text-align: center;
+}
+
+.loading-state {
+	display: table-cell;
+}
+
+.loading-spinner {
+	display: inline-block;
+	width: 18px;
+	height: 18px;
+	margin-right: 0.5rem;
+	vertical-align: -4px;
+	border: 2px solid var(--line);
+	border-top-color: var(--teal);
+	border-radius: 50%;
+	animation: medicine-spinner 700ms linear infinite;
+}
+
+@keyframes medicine-spinner {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
 .table-actions {
 	display: flex;
 	align-items: center;
@@ -60,9 +89,9 @@
 }
 
 .btn-edit {
-	border: 1px solid #16835d;
+	border: 1px solid var(--success);
 	color: #fff;
-	background: #16835d;
+	background: var(--success);
 }
 
 .btn-edit:hover {
@@ -153,7 +182,7 @@
 .field-group input:focus,
 .field-group select:focus {
 	border-color: var(--teal);
-	box-shadow: 0 0 0 4px rgba(8, 127, 140, 0.13);
+	box-shadow: 0 0 0 4px rgba(25, 118, 168, 0.13);
 }
 
 .active-toggle {
@@ -218,7 +247,7 @@
 	place-items: center;
 	border-radius: 50%;
 	color: #fff;
-	background: #1aa267;
+	background: var(--success);
 	font-size: 1.5rem;
 	font-weight: 800;
 }

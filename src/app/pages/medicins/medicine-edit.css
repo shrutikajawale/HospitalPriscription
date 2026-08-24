@@ -81,7 +81,7 @@
 .field-group input:focus,
 .field-group select:focus {
   border-color: var(--teal);
-  box-shadow: 0 0 0 4px rgba(8, 127, 140, 0.13);
+  box-shadow: 0 0 0 4px rgba(25, 118, 168, 0.13);
 }
 
 .active-toggle {
@@ -150,7 +150,7 @@
   place-items: center;
   border-radius: 50%;
   color: #fff;
-  background: #1aa267;
+  background: var(--success);
   font-size: 1.5rem;
   font-weight: 800;
 }

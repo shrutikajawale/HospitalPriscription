@@ -12,6 +12,7 @@ import { MedicineService } from '../../core/services/medicine-service';
 export class Medicins implements OnInit {
 
 medicineList = signal<any[]>([]);
+isLoadingMedicines = signal(false);
 showDeletePopup = signal(false);
 isDeleting = signal(false);
 deleteError = signal(false);
@@ -38,12 +39,15 @@ constructor(private medicinservice: MedicineService){}
  }
 
  loadMedicines() {
+  this.isLoadingMedicines.set(true);
   this.medicinservice.getAllMedicine().subscribe({
     next:(res)=>{
       this.medicineList.set(res as any[]);
+      this.isLoadingMedicines.set(false);
       console.log(res);
     },
     error:(err)=>{
+       this.isLoadingMedicines.set(false);
        console.log("error occured");
     }    
   });

@@ -1,1 +1,88 @@
-<p>patients works!</p>
+<section class="patient-page" aria-labelledby="patient-page-title">
+	<div class="page-heading">
+		<p class="eyebrow">Care management</p>
+		<h1 id="patient-page-title">Patient Management</h1>
+		<p class="page-description">View and manage registered patient records.</p>
+	</div>
+
+	<section class="patient-panel" aria-labelledby="patient-list-title">
+		<div class="patient-panel-header">
+			<h2 id="patient-list-title">Patient List</h2>
+			<button class="btn btn-primary" type="button">+ Add Patient</button>
+		</div>
+
+		<div class="patient-toolbar">
+			<label class="search-field" for="patient-search">
+				<span class="visually-hidden">Search patients</span>
+				<input
+					id="patient-search"
+					type="search"
+					placeholder="Search"
+					[value]="searchTerm()"
+					(input)="updateSearch($any($event.target).value)" />
+			</label>
+			<button class="btn btn-secondary" type="button" (click)="loadPatients()">Refresh</button>
+			<button class="btn btn-secondary" type="button" (click)="clearSearch()">Clear</button>
+			<button class="btn btn-secondary" type="button" (click)="exportPdf()">Export PDF</button>
+		</div>
+
+		<div class="patient-table-scroll">
+			<table>
+				<thead>
+					<tr>
+						<th scope="col">Full Name</th>
+						<th scope="col">Gender</th>
+						<th scope="col">D.O.B</th>
+						<th scope="col">Mobile Number</th>
+						<th scope="col">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					@if (isLoading()) {
+						<tr>
+							<td class="patient-status" colspan="5">
+								<span class="loading-spinner" aria-hidden="true"></span>
+								Loading patients...
+							</td>
+						</tr>
+					} @else if (loadError()) {
+						<tr>
+							<td class="patient-status patient-error" colspan="5">Unable to load patients.</td>
+						</tr>
+					} @else {
+						@for (patient of pagedPatients(); track patient.patientId) {
+							<tr>
+								<td>{{ patient.fullName }}</td>
+								<td>{{ patient.gender }}</td>
+								<td>{{ patient.dateOfBirth | date: 'dd-MMM-yyyy' }}</td>
+								<td>{{ patient.phone }}</td>
+								<td class="patient-actions">
+									<button class="icon-button view-action" type="button" aria-label="View patient">&#9673;</button>
+									<button class="icon-button edit-action" type="button" aria-label="Edit patient">&#9998;</button>
+									<button class="icon-button delete-action" type="button" aria-label="Delete patient">&#128465;</button>
+								</td>
+							</tr>
+						} @empty {
+							<tr>
+								<td class="patient-status" colspan="5">No patients found.</td>
+							</tr>
+						}
+					}
+				</tbody>
+			</table>
+		</div>
+
+		<footer class="patient-pagination" aria-label="Patient list pagination">
+			<span>{{ rangeStart() }}–{{ rangeEnd() }} of {{ filteredPatients().length }}</span>
+			<label for="patient-page-size">Rows</label>
+			<select id="patient-page-size" [value]="pageSize()" (change)="pageSize.set(+$any($event.target).value); currentPage.set(1)">
+				<option value="10">10</option>
+				<option value="25">25</option>
+				<option value="50">50</option>
+			</select>
+			<button class="btn btn-secondary" type="button" (click)="previousPage()" [disabled]="currentPage() === 1">Previous</button>
+			<span>Page {{ currentPage() }} of {{ totalPages() }}</span>
+			<button class="btn btn-primary" type="button" (click)="nextPage()" [disabled]="currentPage() === totalPages()">Next</button>
+		</footer>
+	</section>
+</section>

@@ -8,6 +8,7 @@ import { Medicins } from './pages/medicins/medicins';
 import { MedicineEdit } from './pages/medicins/medicine-edit';
 import { PatientDetails } from './pages/patients/patient-details';
 import { VisitDetails } from './pages/visit-details/visit-details';
+import { roleBasedAccessGuard } from './core/guards/role-based-access-guard';
 
 
 export const routes: Routes = [
@@ -31,53 +32,69 @@ export const routes: Routes = [
             },
             {
                 path:'dashboard',
-                component: Dashboard
+                component: Dashboard,
+                canActivate: [roleBasedAccessGuard],
+                data: { roles: ['Admin', 'Doctor', 'Receptionist'] }
             },
             {
                 path:'patients',
-                component: Patients
+                component: Patients,
+                canActivate: [roleBasedAccessGuard],
+                data: { roles: ['Admin', 'Doctor', 'Receptionist'] }
             },
             {
                 path:'patients/add',
                 component: PatientDetails,
-                data: { mode: 'add' }
+                canActivate: [roleBasedAccessGuard],
+                data: { mode: 'add', roles: ['Admin', 'Doctor', 'Receptionist'] }
             },
             {
                 path:'patients/view/:id',
                 component: PatientDetails,
-                data: { mode: 'view' }
+                canActivate: [roleBasedAccessGuard],
+                data: { mode: 'view', roles: ['Admin', 'Doctor', 'Receptionist'] }
             },
             {
                 path:'patients/edit/:id',
                 component: PatientDetails,
-                data: { mode: 'edit' }
+                canActivate: [roleBasedAccessGuard],
+                data: { mode: 'edit', roles: ['Admin', 'Doctor', 'Receptionist'] }
             },
             {
                 path:'visits',
-                component: Visits
+                component: Visits,
+                canActivate: [roleBasedAccessGuard],
+                data: { roles: ['Admin', 'Doctor', 'Receptionist'] }
             },
             {
                 path:'visits/add',
                 component: VisitDetails,
-                data: { mode: 'add' }
+                canActivate: [roleBasedAccessGuard],
+                data: { mode: 'add', roles: ['Admin', 'Doctor', 'Receptionist'] }
             },
             {
                 path:'visits/view/:id',
                 component: VisitDetails,
-                data: { mode: 'view' }
+                canActivate: [roleBasedAccessGuard],
+                data: { mode: 'view', roles: ['Admin', 'Doctor', 'Receptionist'] }
             },
             {
                 path:'visits/edit/:id',
                 component: VisitDetails,
-                data: { mode: 'edit' }
+                canActivate: [roleBasedAccessGuard],
+                data: { mode: 'edit', roles: ['Admin', 'Doctor', 'Receptionist'] }
             },
              {
                 path:'Medincines',
-                component: Medicins
+                component: Medicins,
+                canActivate: [roleBasedAccessGuard],
+                data: { roles: ['Admin', 'Doctor'] }
             },
             {
                 path:'medicines/edit/:id',
                 component: MedicineEdit
+                ,canActivate: [roleBasedAccessGuard]
+                ,data: { roles: ['Admin', 'Doctor'] }
             },
         ]
 

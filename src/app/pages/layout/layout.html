@@ -6,36 +6,17 @@
 		</a>
 
 		<nav class="sidebar-nav">
-			<p class="nav-label">Overview</p>
-			<a class="nav-link" routerLink="/admin/dashboard" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }">
-				<span class="nav-icon" aria-hidden="true">&#9632;</span>
-				<span>Dashboard</span>
-			</a>
-
-			<p class="nav-label">Management</p>
-			<a class="nav-link" routerLink="/admin/visits" routerLinkActive="is-active">
-				<span class="nav-icon" aria-hidden="true">&#9744;</span>
-				<span>Visits</span>
-			</a>
-			<a class="nav-link" routerLink="/admin/patients" routerLinkActive="is-active">
-				<span class="nav-icon" aria-hidden="true">&#9744;</span>
-				<span>Patient-list</span>
-			</a>
-
-			<p class="nav-label">Assets</p>
-			<span class="nav-link">
-				<a class="nav-link" routerLink="/admin/Medincines" routerLinkActive="is-active">
-				<span class="nav-icon" aria-hidden="true">&#9744;</span>
-				<span>Medicines</span>
-			</a>
-			</span>
-
-			<p class="nav-label">Clinical</p>
-			<span class="nav-link nav-link-muted">
-				<span class="nav-icon" aria-hidden="true">&#43;</span>
-				<span>Prescriptions</span>
-				<span class="coming-soon">Soon</span>
-			</span>
+			@for (section of ['Overview', 'Management', 'Assets']; track section) {
+				@if (itemsForSection(section).length) {
+					<p class="nav-label">{{ section }}</p>
+					@for (item of itemsForSection(section); track item.route) {
+						<a class="nav-link" [routerLink]="item.route" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }">
+							<span class="nav-icon" aria-hidden="true">&#9632;</span>
+							<span>{{ item.title }}</span>
+						</a>
+					}
+				}
+			}
 		</nav>
 
 		<div class="sidebar-footer">

@@ -9,6 +9,7 @@ import { MedicineEdit } from './pages/medicins/medicine-edit';
 import { PatientDetails } from './pages/patients/patient-details';
 import { VisitDetails } from './pages/visit-details/visit-details';
 import { roleBasedAccessGuard } from './core/guards/role-based-access-guard';
+import { Staff } from './pages/staff/staff';
 
 
 export const routes: Routes = [
@@ -95,6 +96,12 @@ export const routes: Routes = [
                 component: MedicineEdit
                 ,canActivate: [roleBasedAccessGuard]
                 ,data: { roles: ['Admin', 'Doctor'] }
+            },
+            {
+                path:'staff',
+                component: Staff
+                ,canActivate: [roleBasedAccessGuard]
+                ,data: { roles: ['Admin'] }
             },
         ]
 

@@ -28,5 +28,18 @@ export class PatientService {
       environment.API_URL + GlobalConstant.API_METHODS.GET_PATIENT_BY_ID + id,
     );
   }
+
+  updatePatient(id: number, patient: PatientModel): Observable<IPatientListModel> {
+    return this.http.put<IPatientListModel>(
+      environment.API_URL + GlobalConstant.API_METHODS.GET_PATIENT_BY_ID + id,
+      patient,
+    );
+  }
+
+  deletePatient(id: number): Observable<void> {
+    return this.http.delete<void>(
+      environment.API_URL + GlobalConstant.API_METHODS.GET_PATIENT_BY_ID + id,
+    );
+  }
   
 }

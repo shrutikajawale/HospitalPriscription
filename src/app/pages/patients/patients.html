@@ -8,7 +8,7 @@
 	<section class="patient-panel" aria-labelledby="patient-list-title">
 		<div class="patient-panel-header">
 			<h2 id="patient-list-title">Patient List</h2>
-			<button class="btn btn-primary" type="button">+ Add Patient</button>
+			<a class="btn btn-primary" routerLink="/admin/patients/add">+ Add Patient</a>
 		</div>
 
 		<div class="patient-toolbar">
@@ -57,9 +57,9 @@
 								<td>{{ patient.dateOfBirth | date: 'dd-MMM-yyyy' }}</td>
 								<td>{{ patient.phone }}</td>
 								<td class="patient-actions">
-									<button class="icon-button view-action" type="button" aria-label="View patient">&#9673;</button>
-									<button class="icon-button edit-action" type="button" aria-label="Edit patient">&#9998;</button>
-									<button class="icon-button delete-action" type="button" aria-label="Delete patient">&#128465;</button>
+									<a class="icon-button view-action" [routerLink]="['/admin/patients/view', patient.patientId]" aria-label="View patient">&#9673;</a>
+									<a class="icon-button edit-action" [routerLink]="['/admin/patients/edit', patient.patientId]" aria-label="Edit patient">&#9998;</a>
+									<button class="icon-button delete-action" type="button" (click)="confirmDelete(patient.patientId, patient.fullName)" aria-label="Delete patient">&#128465;</button>
 								</td>
 							</tr>
 						} @empty {
@@ -86,3 +86,24 @@
 		</footer>
 	</section>
 </section>
+
+@if (showDeletePopup()) {
+	<div class="popup-backdrop" role="presentation">
+		<section class="delete-popup" role="alertdialog" aria-modal="true" aria-labelledby="delete-patient-title">
+			<div class="delete-icon" aria-hidden="true">!</div>
+			<h2 id="delete-patient-title">Delete Patient?</h2>
+			<p>Are you sure you want to delete <strong>{{ selectedPatientName }}</strong>?</p>
+
+			@if (deleteError()) {
+				<p class="delete-error" role="alert">Unable to delete this patient.</p>
+			}
+
+			<div class="popup-actions">
+				<button class="btn btn-secondary" type="button" (click)="cancelDelete()" [disabled]="isDeleting()">Cancel</button>
+				<button class="btn btn-delete" type="button" (click)="deleteSelectedPatient()" [disabled]="isDeleting()">
+					{{ isDeleting() ? 'Deleting...' : 'OK' }}
+				</button>
+			</div>
+		</section>
+	</div>
+}

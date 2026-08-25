@@ -126,6 +126,7 @@
 	background: var(--paper);
 	cursor: pointer;
 	font-size: 0.85rem;
+	text-decoration: none;
 }
 
 .icon-button:hover {
@@ -191,6 +192,61 @@
 .patient-pagination .btn:disabled {
 	cursor: not-allowed;
 	opacity: 0.5;
+}
+
+.popup-backdrop {
+	position: fixed;
+	z-index: 1000;
+	inset: 0;
+	display: grid;
+	place-items: center;
+	padding: 1rem;
+	background: rgba(18, 59, 93, 0.42);
+}
+
+.delete-popup {
+	width: min(100%, 410px);
+	padding: 2rem;
+	border: 1px solid var(--line);
+	border-top: 4px solid var(--danger);
+	border-radius: var(--radius);
+	text-align: center;
+	background: var(--paper);
+	box-shadow: var(--shadow);
+}
+
+.delete-icon {
+	display: grid;
+	width: 48px;
+	height: 48px;
+	margin: 0 auto 1rem;
+	place-items: center;
+	border-radius: 50%;
+	color: #fff;
+	background: var(--danger);
+	font-size: 1.4rem;
+	font-weight: 800;
+}
+
+.delete-popup h2 {
+	margin-bottom: 0.5rem;
+	font-size: 1.25rem;
+}
+
+.delete-popup p {
+	margin-bottom: 1.4rem;
+	color: var(--ink-soft);
+}
+
+.delete-error {
+	color: var(--danger) !important;
+	font-size: 0.85rem;
+}
+
+.popup-actions {
+	display: flex;
+	justify-content: center;
+	gap: 0.7rem;
 }
 
 .visually-hidden {

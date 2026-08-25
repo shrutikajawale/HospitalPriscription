@@ -1,11 +1,12 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { PatientService } from '../../core/services/patient-service';
 import { IPatientListModel } from '../../core/models/interfaces/IPatinet.model';
 
 @Component({
   selector: 'app-patients',
-  imports: [DatePipe],
+  imports: [DatePipe, RouterLink],
   templateUrl: './patients.html',
   styleUrl: './patients.css',
 })
@@ -18,6 +19,11 @@ export class Patients implements OnInit {
   readonly pageSize = signal(10);
   readonly isLoading = signal(false);
   readonly loadError = signal(false);
+  readonly showDeletePopup = signal(false);
+  readonly isDeleting = signal(false);
+  readonly deleteError = signal(false);
+  selectedPatientId = 0;
+  selectedPatientName = '';
 
   readonly filteredPatients = computed(() => {
     const term = this.searchTerm().trim().toLowerCase();
@@ -89,5 +95,39 @@ export class Patients implements OnInit {
 
   exportPdf(): void {
     window.print();
+  }
+
+  confirmDelete(id: number, name: string): void {
+    this.selectedPatientId = id;
+    this.selectedPatientName = name;
+    this.deleteError.set(false);
+    this.showDeletePopup.set(true);
+  }
+
+  cancelDelete(): void {
+    if (!this.isDeleting()) {
+      this.showDeletePopup.set(false);
+    }
+  }
+
+  deleteSelectedPatient(): void {
+    if (!this.selectedPatientId || this.isDeleting()) {
+      return;
+    }
+
+    this.isDeleting.set(true);
+    this.deleteError.set(false);
+
+    this.patientService.deletePatient(this.selectedPatientId).subscribe({
+      next: () => {
+        this.isDeleting.set(false);
+        this.showDeletePopup.set(false);
+        this.loadPatients();
+      },
+      error: () => {
+        this.isDeleting.set(false);
+        this.deleteError.set(true);
+      },
+    });
   }
 }

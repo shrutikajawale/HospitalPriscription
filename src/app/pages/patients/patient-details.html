@@ -1,0 +1,75 @@
+<section class="patient-details-page" aria-labelledby="patient-details-title">
+  <div class="page-heading">
+    <p class="eyebrow">Care management</p>
+    <h1 id="patient-details-title">{{ isViewMode() ? 'Patient Details' : (isAddMode() ? 'Add Patient' : 'Edit Patient') }}</h1>
+    <p class="page-description">{{ isViewMode() ? 'Review the patient record.' : (isAddMode() ? 'Register a new patient.' : 'Update the patient record.') }}</p>
+  </div>
+
+  @if (isLoading()) {
+    <p class="status-message">Loading patient details...</p>
+  } @else if (loadError()) {
+    <p class="status-message error-message">Unable to load this patient.</p>
+  } @else {
+    <form class="details-card" [formGroup]="patientForm" (ngSubmit)="savePatient()">
+      <div class="details-card-header">
+        <h2>{{ isAddMode() ? 'New Patient' : 'Patient Information' }}</h2>
+      </div>
+
+      <div class="details-fields">
+        <div class="field-group">
+          <label for="full-name">Full Name</label>
+          <input id="full-name" type="text" formControlName="fullName" />
+        </div>
+
+        <div class="field-group">
+          <label for="gender">Gender</label>
+          <select id="gender" formControlName="gender">
+            <option value="">Select gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="field-group">
+          <label for="date-of-birth">Date of Birth</label>
+          <input id="date-of-birth" type="date" formControlName="dateOfBirth" />
+        </div>
+
+        <div class="field-group">
+          <label for="phone">Mobile Number</label>
+          <input id="phone" type="tel" formControlName="phone" />
+        </div>
+
+        <div class="field-group full-width">
+          <label for="address">Address</label>
+          <textarea id="address" rows="4" formControlName="address"></textarea>
+        </div>
+      </div>
+
+      @if (saveError()) {
+        <p class="status-message error-message" role="alert">Unable to update this patient.</p>
+      }
+
+      <div class="details-actions">
+        <a class="btn btn-secondary" routerLink="/admin/patients">Back</a>
+        @if (!isViewMode()) {
+          <button class="btn btn-primary" type="submit" [disabled]="isSaving()">
+            {{ isSaving() ? 'Saving...' : (isAddMode() ? 'Add Patient' : 'Save Patient') }}
+          </button>
+        }
+      </div>
+    </form>
+  }
+</section>
+
+@if (showSuccessPopup()) {
+  <div class="popup-backdrop" role="presentation">
+    <section class="success-popup" role="alertdialog" aria-modal="true" aria-labelledby="patient-success-title">
+      <div class="success-icon" aria-hidden="true">&#10003;</div>
+      <h2 id="patient-success-title">{{ isAddMode() ? 'Patient Added' : 'Patient Updated' }}</h2>
+      <p>The patient record was {{ isAddMode() ? 'added' : 'updated' }} successfully.</p>
+      <button class="btn btn-primary" type="button" (click)="closeSuccessPopup()">OK</button>
+    </section>
+  </div>
+}

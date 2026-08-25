@@ -7,6 +7,8 @@ import { Visits } from './pages/visits/visits';
 import { Medicins } from './pages/medicins/medicins';
 import { MedicineEdit } from './pages/medicins/medicine-edit';
 import { PatientDetails } from './pages/patients/patient-details';
+import { VisitDetails } from './pages/visit-details/visit-details';
+
 
 export const routes: Routes = [
     {
@@ -53,6 +55,21 @@ export const routes: Routes = [
             {
                 path:'visits',
                 component: Visits
+            },
+            {
+                path:'visits/add',
+                component: VisitDetails,
+                data: { mode: 'add' }
+            },
+            {
+                path:'visits/view/:id',
+                component: VisitDetails,
+                data: { mode: 'view' }
+            },
+            {
+                path:'visits/edit/:id',
+                component: VisitDetails,
+                data: { mode: 'edit' }
             },
              {
                 path:'Medincines',

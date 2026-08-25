@@ -1,0 +1,63 @@
+<section class="visit-details-page" aria-labelledby="visit-details-title">
+  <div class="page-heading">
+    <p class="eyebrow">Clinical operations</p>
+    <h1 id="visit-details-title">{{ isViewMode() ? 'Visit Details' : (isAddMode() ? 'Add New Visit' : 'Edit Visit') }}</h1>
+    <p class="page-description">{{ isViewMode() ? 'Review the clinical visit record.' : (isAddMode() ? 'Record a new patient visit.' : 'Update the clinical visit record.') }}</p>
+  </div>
+
+  @if (isLoading()) {
+    <p class="status-message">Loading visit details...</p>
+  } @else if (loadError()) {
+    <p class="status-message error-message">Unable to load this visit.</p>
+  } @else {
+    <form class="details-card" [formGroup]="visitForm" (ngSubmit)="saveVisit()">
+      <div class="details-card-header">
+        <h2>{{ isAddMode() ? 'New Visit' : 'Visit Information' }}</h2>
+      </div>
+      <div class="details-fields">
+        <div class="field-group">
+          <label for="visit-patient-id">Patient ID</label>
+          <input id="visit-patient-id" type="number" formControlName="patientId" />
+        </div>
+        <div class="field-group">
+          <label for="visit-doctor-id">Doctor ID</label>
+          <input id="visit-doctor-id" type="number" formControlName="doctorId" />
+        </div>
+        <div class="field-group">
+          <label for="visit-date">Visit Date</label>
+          <input id="visit-date" type="datetime-local" formControlName="visitDate" />
+        </div>
+        <div class="field-group full-width">
+          <label for="visit-symptoms">Symptoms</label>
+          <textarea id="visit-symptoms" rows="3" formControlName="symptoms"></textarea>
+        </div>
+        <div class="field-group full-width">
+          <label for="visit-diagnosis">Diagnosis</label>
+          <textarea id="visit-diagnosis" rows="3" formControlName="diagnosis"></textarea>
+        </div>
+      </div>
+      @if (saveError()) {
+        <p class="status-message error-message" role="alert">Unable to {{ isAddMode() ? 'add' : 'update' }} this visit.</p>
+      }
+      <div class="details-actions">
+        <a class="btn btn-secondary" routerLink="/admin/visits">Back</a>
+        @if (!isViewMode()) {
+          <button class="btn btn-primary" type="submit" [disabled]="isSaving()">
+            {{ isSaving() ? 'Saving...' : (isAddMode() ? 'Add Visit' : 'Save Visit') }}
+          </button>
+        }
+      </div>
+    </form>
+  }
+</section>
+
+@if (showSuccessPopup()) {
+  <div class="popup-backdrop" role="presentation">
+    <section class="success-popup" role="alertdialog" aria-modal="true" aria-labelledby="visit-success-title">
+      <div class="success-icon" aria-hidden="true">&#10003;</div>
+      <h2 id="visit-success-title">{{ isAddMode() ? 'Visit Added' : 'Visit Updated' }}</h2>
+      <p>The visit record was {{ isAddMode() ? 'added' : 'updated' }} successfully.</p>
+      <button class="btn btn-primary" type="button" (click)="closeSuccessPopup()">OK</button>
+    </section>
+  </div>
+}

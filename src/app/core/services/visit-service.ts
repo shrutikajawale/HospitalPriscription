@@ -15,8 +15,12 @@ export class VisitService {
     return this.http.post<IVisitModel>(this.visitApiUrl, visitObj);
   }
 
-  getAllVisits(): Observable<IVisitModel[]> {
-    return this.http.get<IVisitModel[]>(this.visitApiUrl);
+  getAllVisits(): Observable<IVisitList[]> {
+    return this.http.get<IVisitList[]>(this.visitApiUrl);
+  }
+
+  getVisitById(id: number): Observable<IVisitModel> {
+    return this.http.get<IVisitModel>(`${this.visitApiUrl}/${id}`);
   }
 
   getPatientVisitById(id: number): Observable<IVisitList[]> {

@@ -1,1 +1,89 @@
-<p>visits works!</p>
+<section class="visits-page" aria-labelledby="visits-page-title">
+	<div class="page-heading">
+		<p class="eyebrow">Clinical operations</p>
+		<h1 id="visits-page-title">Visits</h1>
+		<p class="page-description">Monitor patient clinical visits, consultations, and doctor assignments.</p>
+	</div>
+
+	<section class="visits-panel" aria-labelledby="visit-list-title">
+		<div class="visits-panel-header">
+			<div>
+				<p class="panel-kicker">Patient care</p>
+				<h2 id="visit-list-title">Visit Records</h2>
+			</div>
+			<a class="btn btn-primary" routerLink="/admin/visits/add">Add New Visit <span aria-hidden="true">+</span></a>
+		</div>
+
+		<div class="visits-table-scroll">
+			<table>
+				<thead>
+					<tr>
+						<th scope="col">Visit ID</th>
+						<th scope="col">Patient Name</th>
+						<th scope="col">Doctor Name</th>
+						<th scope="col">Visit Date</th>
+						<th scope="col">Symptoms</th>
+						<th scope="col">Diagnosis</th>
+						<th scope="col">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					@if (isLoading()) {
+						<tr>
+							<td class="visit-status" colspan="7">
+								<span class="loading-spinner" aria-hidden="true"></span>
+								Loading visits...
+							</td>
+						</tr>
+					} @else if (loadError()) {
+						<tr>
+							<td class="visit-status visit-error" colspan="7">Unable to load visits.</td>
+						</tr>
+					} @else {
+						@for (visit of visits(); track visit.visitId) {
+							<tr>
+								<td class="visit-id">#{{ visit.visitId }}</td>
+								<td class="patient-name">{{ visit.patientName }}</td>
+								<td class="doctor-name">{{ visit.doctorName }}</td>
+								<td>{{ visit.visitDate | date: 'MMM d, yyyy, h:mm a' }}</td>
+								<td>{{ visit.symptoms }}</td>
+								<td>{{ visit.diagnosis || 'Not recorded' }}</td>
+								<td class="visit-actions">
+									<a class="icon-button view-action" [routerLink]="['/admin/visits/view', visit.visitId]" aria-label="View visit">&#9673;</a>
+									<a class="icon-button edit-action" [routerLink]="['/admin/visits/edit', visit.visitId]" aria-label="Edit visit">&#9998;</a>
+									<button class="icon-button delete-action" type="button" (click)="confirmDelete(visit.visitId, '#' + visit.visitId)" aria-label="Delete visit">&#128465;</button>
+								</td>
+							</tr>
+						} @empty {
+							<tr>
+								<td class="visit-status" colspan="7">No visit records found.</td>
+							</tr>
+						}
+					}
+				</tbody>
+			</table>
+		</div>
+
+		<div class="visits-panel-footer">
+			<span>Showing {{ visits().length }} {{ visits().length === 1 ? 'record' : 'records' }}</span>
+			<button class="footer-action" type="button">Export CSV <span aria-hidden="true">&#8595;</span></button>
+		</div>
+	</section>
+</section>
+
+@if (showDeletePopup()) {
+	<div class="popup-backdrop" role="presentation">
+		<section class="delete-popup" role="alertdialog" aria-modal="true" aria-labelledby="delete-visit-title">
+			<div class="delete-icon" aria-hidden="true">!</div>
+			<h2 id="delete-visit-title">Delete Visit?</h2>
+			<p>Are you sure you want to delete visit <strong>{{ selectedVisitLabel }}</strong>?</p>
+			@if (deleteError()) {
+				<p class="delete-error" role="alert">Unable to delete this visit.</p>
+			}
+			<div class="popup-actions">
+				<button class="btn btn-secondary" type="button" (click)="cancelDelete()" [disabled]="isDeleting()">Cancel</button>
+				<button class="btn btn-delete" type="button" (click)="deleteSelectedVisit()" [disabled]="isDeleting()">{{ isDeleting() ? 'Deleting...' : 'OK' }}</button>
+			</div>
+		</section>
+	</div>
+}
